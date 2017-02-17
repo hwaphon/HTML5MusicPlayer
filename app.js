@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-02-17 11:18:51
+ * @Last Modified time: 2017-02-17 18:32:39
  */
 
 (function() {
@@ -17,7 +17,8 @@
 		volumeProgress = document.getElementById("music-sound"),
 		fileElement = document.getElementById("file"),
 		musicTitleElement = document.getElementById("music-title"),
-		addMusicElement = document.getElementById("add-music");
+		addMusicElement = document.getElementById("add-music"),
+		albumPicElment = document.getElementById("picture");
 
 	var interval;
 
@@ -42,8 +43,6 @@
 
 	volumeDownElement.addEventListener("click", function() {
 		var volume = player.volume;
-
-		console.log(volume);
 		if (volume > 0.0) {
 			player.volume -= 0.2;
 			volumeProgress.value = player.volume * 10;
@@ -53,7 +52,6 @@
 
 	volumeUpElement.addEventListener("click", function() {
 		var volume = player.volume;
-		console.log(volume);
 		if (volume < 1.0) {
 			player.volume += 0.2;
 			volumeProgress.value = player.volume * 10;
@@ -66,12 +64,13 @@
 
 	addMusicElement.addEventListener("click", function(event) {
 		fileElement.click();
-	})
+	});
 
 	function start() {
 		controlIcon.classList.remove("fa-play");
 		controlIcon.classList.add("fa-pause");
 		setDuration();
+		changeImage();
 	}
 
 	function pause() {
@@ -106,7 +105,6 @@
 
 		var progress = (currentTime / duration).toFixed(2) * 100;
 		progressElement.value = progress;
-
 	}
 
 	function getURL() {
@@ -115,5 +113,15 @@
 		player.src = url;
 		musicTitleElement.innerHTML = file.name;
 		pause();
+	}
+
+	function changeImage() {
+		var num = parseInt(Math.random() * 16),
+			src;	
+
+		num = (num > 0) ? num : num + 1;
+		src = "raw/" + num + ".jpg";
+		console.log(num);	
+		albumPicElment.src = src;
 	}
 })();
