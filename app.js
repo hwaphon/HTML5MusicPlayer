@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-02-17 18:32:39
+ * @Last Modified time: 2017-02-18 10:29:18
  */
 
 (function() {
@@ -34,11 +34,11 @@
 	});
 
 	player.addEventListener("ended", function() {
+		clearInterval(interval);
+		pause();
 		progressElement.value = 0;
 		durationElement.innerHTML = "/0:00";
 		currentTimeElement.innerHTML = "0:00";
-		clearInterval(interval);
-		pause();
 	});
 
 	volumeDownElement.addEventListener("click", function() {
