@@ -2,7 +2,7 @@
 * @Author: hwaphon
 * @Date:   2017-02-16 16:31:15
 * @Last Modified by:   hwaphon
-* @Last Modified time: 2017-02-17 11:15:14
+* @Last Modified time: 2017-02-18 10:09:51
 */
 
 * {
@@ -12,7 +12,7 @@
 }
 
 article#music-player {
-    width: 520px;
+    width: 518px;
     height: 260px;
     margin: 48px auto;
     padding: 18px;
@@ -55,24 +55,26 @@ div#album-picture img {
 #music-title {
     font-size: 18px;
     font-weight: 500;
-
     margin-bottom: 8px;
-
     color: #fff;
 }
 
 #music-singer {
     font-size: 12px;
 
-    margin-bottom: 48px;
-
     color: #aaa;
 }
 
+#music-content {
+    position: relative;
+}
 #music-control {
     display: flex;
 
     align-items: center;
+    position: absolute;
+    bottom: 8px;
+    left: 164px;
 }
 
 #music-stop,
