@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-02-18 10:29:18
+ * @Last Modified time: 2017-02-19 22:35:14
  */
 
 (function() {
@@ -18,8 +18,32 @@
 		fileElement = document.getElementById("file"),
 		musicTitleElement = document.getElementById("music-title"),
 		addMusicElement = document.getElementById("add-music"),
-		albumPicElment = document.getElementById("picture");
+		albumPicElment = document.getElementById("picture"),
+		musicPlayer = document.getElementById("music-player");
 
+
+	musicPlayer.addEventListener("dragover", function(e) {
+		e.preventDefault();
+	});
+
+	musicPlayer.addEventListener("drop", readData, false);
+
+	function readData(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var filelist = e.dataTransfer.files;
+		if (!filelist) { return; }
+
+		if (filelist.length > 0) {
+			var file = filelist[0];
+			var src = URL.createObjectURL(file);
+			console.log(src);
+			player.src = src;
+			musicTitleElement.innerHTML = file.name;
+			pause();
+		}
+	}
 	var interval;
 
 	musicControl.addEventListener("click", function() {
