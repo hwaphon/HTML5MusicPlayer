@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-02-19 22:35:14
+ * @Last Modified time: 2017-03-25 20:23:28
  */
 
 (function() {
@@ -16,16 +16,90 @@
 		volumeDownElement = document.getElementById("volume-down"),
 		volumeProgress = document.getElementById("music-sound"),
 		fileElement = document.getElementById("file"),
+		nextElement = document.getElementById("music-next"),
+		preElement = document.getElementById("music-pre"),
 		musicTitleElement = document.getElementById("music-title"),
 		addMusicElement = document.getElementById("add-music"),
 		albumPicElment = document.getElementById("picture"),
-		musicPlayer = document.getElementById("music-player");
+		musicPlayer = document.getElementById("music-player"),
+		musicUL = document.getElementById("musics");
 
+	function MusicQueue() {
+		var musics = [];
+		var index = 0;
+
+		this.addMusic = function(music) {
+			musics.push(music);
+		};
+
+		this.getIndex = function() {
+			return index;
+		}
+
+		this.addList = function(list) {
+			var length = list.length;
+
+			for(var i = 0; i < length; i++) {
+				this.addMusic(list[i]);
+			}
+		};
+
+		this.getMusic = function() {
+			if(index >= musics.length) {
+				index = 0;
+			}
+			return musics[index++];
+		};
+
+		this.getPreMusic = function() {
+			if(index - 1 < 0) {
+				return musics[0];
+			}
+			return musics[--index];
+		};
+
+		this.getMusicByName = function(name) {
+			for(var i = 0; i < musics.length; i++) {
+				if(musics[i].name === name) {
+					index = i;
+					return musics[index];
+				}
+			}
+		};
+
+		this.getAllMusic = function() {
+			return musics;
+		};
+
+		this.pushMusics = function(ms) {
+			musics = ms;
+		};
+	}
+
+	var musicQueue = new MusicQueue();
+
+	(function init() {
+		musicQueue.addMusic(new Music("风筝误", "raw/fly.mp3"));
+		preparePlay(musicQueue.getMusic());
+		player.pause();
+		pause();
+		appendMusicToDOM("风筝误");
+	})();
+	var index = 0;
+
+	// next music logic
+	nextElement.addEventListener("click", function(event) {
+		preparePlay(musicQueue.getMusic());
+	}, false);
+
+	// pre music logic
+	preElement.addEventListener("click", function(event) {
+		preparePlay(musicQueue.getPreMusic());
+	},false);
 
 	musicPlayer.addEventListener("dragover", function(e) {
 		e.preventDefault();
 	});
-
 	musicPlayer.addEventListener("drop", readData, false);
 
 	function readData(e) {
@@ -37,20 +111,18 @@
 
 		if (filelist.length > 0) {
 			var file = filelist[0];
-			var src = URL.createObjectURL(file);
-			console.log(src);
-			player.src = src;
-			musicTitleElement.innerHTML = file.name;
-			pause();
+
+			musicQueue.addMusic(getMusic(file));
+			appendMusicToDOM(file.name);
 		}
 	}
-	var interval;
+
+	var timeId;
 
 	musicControl.addEventListener("click", function() {
 		if (player.paused) {
 			player.play();
 			start();
-			interval = setInterval(change, 1000);
 		} else {
 			player.pause();
 			pause();
@@ -58,11 +130,8 @@
 	});
 
 	player.addEventListener("ended", function() {
-		clearInterval(interval);
-		pause();
-		progressElement.value = 0;
-		durationElement.innerHTML = "/0:00";
-		currentTimeElement.innerHTML = "0:00";
+		var music = musicQueue.getMusic();
+		preparePlay(music);
 	});
 
 	volumeDownElement.addEventListener("click", function() {
@@ -83,16 +152,41 @@
 	});
 
 	fileElement.addEventListener("change", function(event) {
-		getURL();
+
+		var files = fileElement.files;
+
+		for(var i = 0; i < files.length; i++) {
+			if(files[i].type === "audio/mp3") {
+				var music = getMusic(files[i]);
+				musicQueue.addMusic(music);
+				appendMusicToDOM(music.name);
+			}
+
+		}
 	});
 
 	addMusicElement.addEventListener("click", function(event) {
 		fileElement.click();
 	});
 
+	// set current time by progress element in dom
+	progressElement.addEventListener("click", function(event) {
+		var t = (event.offsetX / 460).toFixed(2);
+		var currentTime = player.duration * t;
+		player.currentTime = currentTime;
+		change();
+	},false);
+
+	musics.addEventListener("click", function(event) {
+		var name = event.target.innerHTML;
+		preparePlay(musicQueue.getMusicByName(name));
+	},false);
+
 	function start() {
+		// change icon
 		controlIcon.classList.remove("fa-play");
 		controlIcon.classList.add("fa-pause");
+
 		setDuration();
 		changeImage();
 	}
@@ -102,16 +196,33 @@
 		controlIcon.classList.add("fa-play");
 	}
 
+	function preparePlay(music) {
+		musicTitleElement.innerHTML = music.name;
+		player.src = music.src;
+
+		start();
+		setCurrentTime();
+
+		player.play();
+		setTimeout(setDuration, 500);
+		clearTimeout(timeId);
+		timeId = setTimeout(change, 500);
+	}
+
+	// set music total time in dom
 	function setDuration() {
 		var total = player.duration;
+		total = total ? total : 0;
 		durationElement.innerHTML = "/" + timeFormat(total);
 	}
 
+	// set the current time of music in dom
 	function setCurrentTime() {
 		var total = player.currentTime;
 		currentTimeElement.innerHTML = timeFormat(total);
 	}
 
+	// transform time format to hh:mm
 	function timeFormat(total) {
 		var minute = parseInt(total / 60),
 			second = parseInt(total - minute * 60),
@@ -122,21 +233,27 @@
 		return result;
 	}
 
+	// update the progress
 	function change() {
 		setCurrentTime();
 		var currentTime = player.currentTime,
 			duration = player.duration;
 
 		var progress = (currentTime / duration).toFixed(2) * 100;
+		progress = progress <= 100 ? progress : 100;
 		progressElement.value = progress;
+
+		timeId = setTimeout(change, 500);
 	}
 
-	function getURL() {
-		var file = fileElement.files[0];
+	function getMusic(file) {
 		var url = URL.createObjectURL(file);
-		player.src = url;
-		musicTitleElement.innerHTML = file.name;
-		pause();
+		return new Music(file.name, url);
+	}
+
+	function Music(name, src) {
+		this.name = name;
+		this.src = src;
 	}
 
 	function changeImage() {
@@ -145,7 +262,13 @@
 
 		num = (num > 0) ? num : num + 1;
 		src = "raw/" + num + ".jpg";
-		console.log(num);	
 		albumPicElment.src = src;
+	}
+
+	function appendMusicToDOM(name) {
+		var li = document.createElement("li");
+		var text = document.createTextNode(name);
+		li.appendChild(text);
+		musicUL.appendChild(li);
 	}
 })();

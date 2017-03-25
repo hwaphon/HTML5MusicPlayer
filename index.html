@@ -4,34 +4,38 @@
 	<meta charset="utf-8">
 	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="main.css">
-	<script src="app.js" defer></script>
 </head>
 <body>
-	<input type="file" id="file">
+	<input type="file" id="file" multiple>
 	<article id="music-player">
 		<audio id="player">
-			<source src="raw/fly.ogg" type="audio/ogg">
-			<source src="raw/fly.mp3" type="audio/mp3">
 		</audio>
+
 		<section id="music-content">
 			<div id="album-picture">
 				<img src="raw/1.jpg" id="picture">
 			</div>
+
 			<span id="add-music"><i class="fa fa-upload" aria-hidden="true"></i></span>
+
 			<div>
-				<h3 id="music-title">风筝误</h3>
+				<h3 id="music-title">Welcome to you!</h3>
 				<p id="music-singer">Have a good time!</p>
 			</div>
+
 			<div id="music-control">
 				<button id="music-stop">
 					<i class="fa fa-play" aria-hidden="true" id="control-icon"></i>
 				</button>
+
 				<button id="music-pre">
 					<i class="fa fa-fast-backward" aria-hidden="true"></i>
 				</button>
+
 				<button id="music-next">
 					<i class="fa fa-fast-forward" aria-hidden="true"></i>
 				</button>
+
 				<div id="sound-icon">					
 					<i class="fa fa-volume-up" aria-hidden="true" id="volume"></i>
 					<i class="fa fa-minus-circle" aria-hidden="true" id="volume-down"></i>
@@ -42,9 +46,15 @@
 		</section>
 		<aside>
 			<div><progress value="0" max="100" id="music-progress"></progress></div>
-			<span id="current-time">0:00</span><span id="duration">/0:00</span>
-			
+			<span id="current-time">0:00</span><span id="duration">/0:00</span>		
 		</aside>
+
 	</article>
+
+	<article id="music-list">
+		<ul id="musics"></ul>
+	</article>
+
+	<script src="app.js"></script>
 </body>
 </html>
