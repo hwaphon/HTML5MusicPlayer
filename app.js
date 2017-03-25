@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-25 20:23:28
+ * @Last Modified time: 2017-03-25 21:26:54
  */
 
 (function() {
@@ -59,13 +59,17 @@
 		};
 
 		this.getMusicByName = function(name) {
+			index = this.getIndexByName(name);
+			return musics[index++];
+		};
+
+		this.getIndexByName = function(name) {
 			for(var i = 0; i < musics.length; i++) {
 				if(musics[i].name === name) {
-					index = i;
-					return musics[index];
+					return index;
 				}
 			}
-		};
+		}
 
 		this.getAllMusic = function() {
 			return musics;
@@ -79,10 +83,10 @@
 	var musicQueue = new MusicQueue();
 
 	(function init() {
-		musicQueue.addMusic(new Music("风筝误", "raw/fly.mp3"));
-		preparePlay(musicQueue.getMusic());
-		player.pause();
-		pause();
+		var music = new Music("风筝误", "raw/fly.ogg");
+		musicQueue.addMusic(music);
+		musicTitleElement.innerHTML = music.name;
+		player.src = music.src;
 		appendMusicToDOM("风筝误");
 	})();
 	var index = 0;
@@ -154,9 +158,9 @@
 	fileElement.addEventListener("change", function(event) {
 
 		var files = fileElement.files;
-
+		console.log(files);
 		for(var i = 0; i < files.length; i++) {
-			if(files[i].type === "audio/mp3") {
+			if((files[i].type).indexOf("audio") !== -1) {
 				var music = getMusic(files[i]);
 				musicQueue.addMusic(music);
 				appendMusicToDOM(music.name);
@@ -207,6 +211,9 @@
 		setTimeout(setDuration, 500);
 		clearTimeout(timeId);
 		timeId = setTimeout(change, 500);
+
+		var index = musicQueue.getIndexByName(music.name);
+
 	}
 
 	// set music total time in dom
