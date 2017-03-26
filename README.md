@@ -1,3 +1,6 @@
+如果你对版本更新介绍以及实现没有兴趣，你也可以直接查看 [使用指南](https://github.com/hwaphon/HTML5MusicPlayer/blob/gh-pages/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.md)
+
+---
 
 ### 2.1 版本 - 2017 03.26
 
