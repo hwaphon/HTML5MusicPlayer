@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-26 20:36:10
+ * @Last Modified time: 2017-03-26 21:22:53
  */
 
 (function() {
@@ -235,7 +235,6 @@
 		controlIcon.classList.add("fa-pause");
 
 		setDuration();
-		changeImage();
 	}
 
 	function pause() {
@@ -248,6 +247,7 @@
 		player.src = music.src;
 
 		start();
+		changeImage();
 		setCurrentTime();
 
 		player.play();
