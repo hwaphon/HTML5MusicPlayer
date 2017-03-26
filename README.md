@@ -1,16 +1,33 @@
 
 ### 2.1 版本 - 2017 03.26
 
-这个版本较与上一版本是个小改动，即增添了随机播放和顺序播放的功能，其实现起来非常简单，就是利用一个 `div` 容器包含两个 `img` 标签，将 `div` 的 `position` 设置为 `relative`， 将 `img` 的 `position` 设置为 `absolute`，这样两张图片（一个是循环播放的图标，一个是随机播放的图标）就会重叠在一起，然后设置一个 `hidden` 类，用于将指定标签的 `visibility` 设置为 `hidden`，注意这里并没有设置 `display` 为 `none`。既然讲到了这里，就来提一下 `display:none` 和 `visibility: hidden` 的 区别：
+![image](https://github.com/hwaphon/HTML5MusicPlayer/blob/gh-pages/2.1.png)
 
- 1. 如果设置了 `display: none`，那么元素就不再占用文档中的空间，看上去就好象这个元素并不存在（其实就是不存在了），这样的话，文档中的其它元素就会挤上来占用该元素本该占有的位置。
+这个版本较与上一版本有两个小改动，一是增添了随机播放和顺序播放的功能，二是对正在播放的音乐背景加深显示而且具有 `scrollView` 功能。
 
- 2. 如果设置了 `visibility: hidden`，那么该元素只是看上去不存在，其实它还在文档中占有一席之地，意思就是它还处在它应该在的位置，只是看不到了而已。
+先来介绍第一个功能： 其实现起来非常简单，就是利用一个 `div` 容器包含两个 `img` 标签，将 `div` 的 `position` 设置为 `relative`， 将 `img` 的 `position` 设置为 `absolute`，这样两张图片（一个是循环播放的图标，一个是随机播放的图标）就会重叠在一起，然后设置一个 `hidden` 类，用于将指定标签的 `visibility` 设置为 `hidden`，注意这里并没有设置 `display` 为 `none`。既然讲到了这里，就来提一下 `display:none` 和 `visibility: hidden` 的 区别：
 
- 3. 看上去使用二者好像没多大区别，其实是有的，使用 `visibility: hidden - visibility: visible` 的时候元素是一个从不可见到可见的过程，这也就意味着我们可以在这个过程中添加一些动画效果，而对于 `display: none - display: *` 的过程是将一个元素添加到文档中，是个突变的过程，所以我们无法在这个过程中使用动画效果。
+  1. 如果设置了 `display: none`，那么元素就不再占用文档中的空间，看上去就好象这个元素并不存在（其实就是不存在了），这样的话，文档中的其它元素就会挤上来占用该元素本该占有的位置。
+
+  2. 如果设置了 `visibility: hidden`，那么该元素只是看上去不存在，其实它还在文档中占有一席之地，意思就是它还处在它应该在的位置，只是看不到了而已。
+
+  3. 看上去使用二者好像没多大区别，其实是有的，使用 `visibility: hidden - visibility: visible` 的时候元素是一个从不可见到可见的过程，这也就意味着我们可以在这个过程中添加一些动画效果，而对于 `display: none - display: *` 的过程是将一个元素添加到文档中，是个突变的过程，所以我们无法在这个过程中使用动画效果。
 
 网上一些文章说，当设置了 `visibility: hideen` 后，该元素是不可见的，但是可以触摸的到。说实话，我不是很明白这个触摸的到是什么意思！它能触发 `click` 事件？我在 `Firefox, Opera, Chrome` 中对此做了测试，事实是当设置了 `visibility: hidden` 后，它不能再触发 `click` 事件。
 
+再来看看第二个功能： 一般我们用 `js` 改变样式的话，都是通过添加或者移除 `class` 来实现的，在这里也不例外，首先我设置了一个 `selected` 的 `class` 样式，以备添加。我们知道音乐的添加顺序决定了其在 `DOM` 中显示的顺序，所以我们完全可以在 `MusicQueue` 中添加一个 `getIndexByName()` 方法，这样就可以直接将 `li` 标签的位置计算出来，还有一点就是要设置一个 `DOM` 缓存列表，因为我们每次都是打开浏览器添加音乐，所以完全可以在将音乐添加到 `DOM` 之前，首先将创建的 `DOM` 元素缓存在一个列表内，目的就是减少对 `DOM` 的请求次数。好了，既然有了 `index`，又有了已经缓存下来的 `DOM`，就可以为其添加样式了，其核心代码如下。
+
+	function setSelected(index) {
+		liElementsCache[index].classList.add("selected");
+		liElementsCache[index].scrollIntoView();
+	}
+
+	function removeSelected(index) {
+		liElementsCache[index].classList.remove("selected");
+	}
+ 
+ `scrollIntoView()` 是 `HTML5` 新增加的一个方法，可以在所有的 `HTML` 元素上调用，通过滚动浏览器窗口或者其他容器元素，将调用的元素出现在视口中，如果给这个方法传入 `true` 参数，或者可以不传入任何参数，那么窗口滚动之后会让调用元素的顶部与视口顶部尽可能平齐。如果传入 `false`，那么调用元素会尽可能全部出现在视口中，不过顶部不一定平齐。这个方法的兼容性还不错，除了 `Opera Mini` 不支持，其他浏览器几乎都能用。
+ 
 ### 2.0 版本 - 2017.03 
 
 ![image](https://github.com/hwaphon/HTML5MusicPlayer/blob/gh-pages/2.0.png)
