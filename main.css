@@ -2,7 +2,7 @@
 * @Author: hwaphon
 * @Date:   2017-02-16 16:31:15
 * @Last Modified by:   hwaphon
-* @Last Modified time: 2017-03-26 13:57:14
+* @Last Modified time: 2017-03-26 14:30:57
 */
 
 *,*::after,*::before {
@@ -14,6 +14,7 @@
 html,body {
     height: 100%;
     overflow: hidden;
+    font-family: sans-serif;
 }
 body {
     background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);

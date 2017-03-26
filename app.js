@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-26 14:00:39
+ * @Last Modified time: 2017-03-26 14:06:44
  */
 
 (function() {
@@ -26,6 +26,7 @@
 		loopElement = document.getElementById("play-style-loop"),
 		randomElement = document.getElementById("play-style-random");
 
+	/* music queue to save and get music to play */
 	function MusicQueue() {
 		var musics = [];
 		var index = -1;
@@ -103,9 +104,10 @@
 			musics = ms;
 		};
 	}
+	/* music queue end */
 
+	/* init view */
 	var musicQueue = new MusicQueue();
-
 	(function init() {
 		var music = new Music("风筝误", "raw/fly.ogg");
 		musicQueue.addMusic(music);
@@ -115,7 +117,9 @@
 		appendMusicToDOM("风筝误");
 	})();
 	var index = 0;
+	/* end init view */
 
+	/* register event handler */
 	loopElement.addEventListener("click", function(event) {
 		musicQueue.setRandom();
 		randomElement.classList.remove("hidden");
@@ -141,8 +145,9 @@
 	musicPlayer.addEventListener("dragover", function(e) {
 		e.preventDefault();
 	});
-	musicPlayer.addEventListener("drop", readData, false);
 
+	
+	musicPlayer.addEventListener("drop", readData, false);
 	function readData(e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -207,7 +212,6 @@
 
 		}
 	});
-
 	addMusicElement.addEventListener("click", function(event) {
 		fileElement.click();
 	});
@@ -224,6 +228,7 @@
 		var name = event.target.innerHTML;
 		preparePlay(musicQueue.getMusicByName(name));
 	},false);
+	/* end register event handler */
 
 	function start() {
 		// change icon
