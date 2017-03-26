@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-25 21:26:54
+ * @Last Modified time: 2017-03-26 10:55:16
  */
 
 (function() {
@@ -26,7 +26,7 @@
 
 	function MusicQueue() {
 		var musics = [];
-		var index = 0;
+		var index = -1;
 
 		this.addMusic = function(music) {
 			musics.push(music);
@@ -48,25 +48,27 @@
 			if(index >= musics.length) {
 				index = 0;
 			}
-			return musics[index++];
+			index += 1;
+			return musics[index];
 		};
 
 		this.getPreMusic = function() {
 			if(index - 1 < 0) {
 				return musics[0];
 			}
-			return musics[--index];
+			index -= 1;
+			return musics[index];
 		};
 
 		this.getMusicByName = function(name) {
 			index = this.getIndexByName(name);
-			return musics[index++];
+			return musics[index];
 		};
 
 		this.getIndexByName = function(name) {
 			for(var i = 0; i < musics.length; i++) {
 				if(musics[i].name === name) {
-					return index;
+					return i;
 				}
 			}
 		}
@@ -175,7 +177,7 @@
 
 	// set current time by progress element in dom
 	progressElement.addEventListener("click", function(event) {
-		var t = (event.offsetX / 460).toFixed(2);
+		var t = (event.offsetX / 470).toFixed(2);
 		var currentTime = player.duration * t;
 		player.currentTime = currentTime;
 		change();
@@ -213,7 +215,6 @@
 		timeId = setTimeout(change, 500);
 
 		var index = musicQueue.getIndexByName(music.name);
-
 	}
 
 	// set music total time in dom
