@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-26 18:57:28
+ * @Last Modified time: 2017-03-26 20:24:15
  */
 
 (function() {
@@ -190,7 +190,6 @@
 		var volume = player.volume;
 		player.volume = (volume - 0.2 >= 0) ? volume - 0.2 : 0;
 		volumeProgress.value = player.volume * 10;
-
 	});
 
 	volumeUpElement.addEventListener("click", function() {
@@ -198,6 +197,12 @@
 		player.volume = (volume + 0.2 <= 1) ? volume + 0.2 : 1;
 		volumeProgress.value = player.volume * 10;
 	});
+
+	volumeProgress.addEventListener("click", function(event) {
+		var t = (event.offsetX / 100).toFixed(1);
+		player.volume = t;
+		volumeProgress.value = t*10;
+	},false);
 
 	fileElement.addEventListener("change", function(event) {
 
@@ -222,7 +227,6 @@
 		player.currentTime = currentTime;
 		change();
 	},false);
-
 
 	musics.addEventListener("dblclick", function(event) {
 		var name = event.target.innerHTML;

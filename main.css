@@ -2,7 +2,7 @@
 * @Author: hwaphon
 * @Date:   2017-02-16 16:31:15
 * @Last Modified by:   hwaphon
-* @Last Modified time: 2017-03-26 18:59:28
+* @Last Modified time: 2017-03-26 20:14:33
 */
 
 *,*::after,*::before {
@@ -144,6 +144,7 @@ div#album-picture img {
 
     border-radius: 8px;
     border:1px solid #517fa4;
+    cursor: pointer;
 }
 
 #music-sound:hover {
