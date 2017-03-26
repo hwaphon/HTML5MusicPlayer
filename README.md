@@ -28,6 +28,17 @@
  
  `scrollIntoView()` 是 `HTML5` 新增加的一个方法，可以在所有的 `HTML` 元素上调用，通过滚动浏览器窗口或者其他容器元素，将调用的元素出现在视口中，如果给这个方法传入 `true` 参数，或者可以不传入任何参数，那么窗口滚动之后会让调用元素的顶部与视口顶部尽可能平齐。如果传入 `false`，那么调用元素会尽可能全部出现在视口中，不过顶部不一定平齐。这个方法的兼容性还不错，除了 `Opera Mini` 不支持，其他浏览器几乎都能用。
  
+ 值得一提的是 `::selection` 伪元素，用于设置选中元素的属性，由于我们设置了双击列表项播放列表歌曲，所以我们需要利用该元素设置选中元素的背景颜色为透明，不然会很难看。在 [can i use](http://caniuse.com/#search=selection) 可以看到该元素的支持率已经达到了 75%，不过值得注意的是在 `Firefox` 中使用该元素需要添加前缀。我的代码如下所示：
+ 
+     ::selection {
+         background-color: transparent;
+     }
+
+     ::-moz-selection {
+        background-color: transparent;
+     }
+
+ 
 ### 2.0 版本 - 2017.03 
 
 ![image](https://github.com/hwaphon/HTML5MusicPlayer/blob/gh-pages/2.0.png)
