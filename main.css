@@ -2,13 +2,21 @@
 * @Author: hwaphon
 * @Date:   2017-02-16 16:31:15
 * @Last Modified by:   hwaphon
-* @Last Modified time: 2017-03-26 11:12:21
+* @Last Modified time: 2017-03-26 13:57:14
 */
 
-* {
+*,*::after,*::before {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+html,body {
+    height: 100%;
+    overflow: hidden;
+}
+body {
+    background-image: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
 }
 
 article#music-player {
@@ -116,7 +124,7 @@ div#album-picture img {
 }
 
 #sound-icon {
-    font-size: 18px;
+    font-size: 16px;
 
     display: flex;
 
@@ -134,6 +142,7 @@ div#album-picture img {
     margin-left: 8px;
 
     border-radius: 8px;
+    border:1px solid #517fa4;
 }
 
 #music-sound:hover {
@@ -148,6 +157,7 @@ div#album-picture img {
 
 aside {
     margin-top: 18px;
+    position: relative;
 }
 
 aside div {
@@ -172,6 +182,7 @@ aside progress {
     background-color: #fff;
 }
 
+
 progress::-webkit-progress-value {
     border-radius: 12px;
     background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
@@ -192,6 +203,19 @@ progress::-moz-progress-bar {
     margin-left: 6px;
 
     color: #fff;
+}
+
+#play-style-loop,#play-style-random {
+    display: inline-block;
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    cursor: pointer;
+    visibility: visible;
+}
+
+#play-style-loop.hidden, #play-style-random.hidden {
+    visibility: hidden;
 }
 
 span#duration {

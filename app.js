@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-26 10:55:16
+ * @Last Modified time: 2017-03-26 14:00:39
  */
 
 (function() {
@@ -22,11 +22,22 @@
 		addMusicElement = document.getElementById("add-music"),
 		albumPicElment = document.getElementById("picture"),
 		musicPlayer = document.getElementById("music-player"),
-		musicUL = document.getElementById("musics");
+		musicUL = document.getElementById("musics"),
+		loopElement = document.getElementById("play-style-loop"),
+		randomElement = document.getElementById("play-style-random");
 
 	function MusicQueue() {
 		var musics = [];
 		var index = -1;
+		var loop = true;
+
+		this.setLoop = function() {
+			loop = true;
+		};
+
+		this.setRandom = function() {
+			loop = false;
+		};
 
 		this.addMusic = function(music) {
 			musics.push(music);
@@ -34,7 +45,7 @@
 
 		this.getIndex = function() {
 			return index;
-		}
+		};
 
 		this.addList = function(list) {
 			var length = list.length;
@@ -45,19 +56,30 @@
 		};
 
 		this.getMusic = function() {
-			if(index >= musics.length) {
-				index = 0;
+			if(loop === true) {
+				if(index === musics.length) {
+					index = -1;
+				}
+
+				index += 1;
+				return musics[index];
+			} else {
+				index = Math.floor(Math.random() * musics.length);
+				return musics[index];
 			}
-			index += 1;
-			return musics[index];
 		};
 
 		this.getPreMusic = function() {
-			if(index - 1 < 0) {
-				return musics[0];
+			if(loop) {
+				if(index === 0) {
+					return musics[0];
+				} else {
+					index -= 1;
+					return musics[index];
+				}
+			} else {
+				return this.getMusic();
 			}
-			index -= 1;
-			return musics[index];
 		};
 
 		this.getMusicByName = function(name) {
@@ -89,9 +111,22 @@
 		musicQueue.addMusic(music);
 		musicTitleElement.innerHTML = music.name;
 		player.src = music.src;
+		setTimeout(setDuration, 500);
 		appendMusicToDOM("风筝误");
 	})();
 	var index = 0;
+
+	loopElement.addEventListener("click", function(event) {
+		musicQueue.setRandom();
+		randomElement.classList.remove("hidden");
+		loopElement.classList.add("hidden");
+	},false);
+
+	randomElement.addEventListener("click", function(event) {
+		musicQueue.setLoop();
+		loopElement.classList.remove("hidden");
+		randomElement.classList.add("hidden");
+	}, false);
 
 	// next music logic
 	nextElement.addEventListener("click", function(event) {
@@ -129,9 +164,11 @@
 		if (player.paused) {
 			player.play();
 			start();
+			timeId = setTimeout(change, 500);
 		} else {
 			player.pause();
 			pause();
+			clearTimeout(timeId);
 		}
 	});
 
