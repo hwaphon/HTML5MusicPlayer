@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-26 16:17:09
+ * @Last Modified time: 2017-03-26 18:57:28
  */
 
 (function() {
@@ -188,19 +188,15 @@
 
 	volumeDownElement.addEventListener("click", function() {
 		var volume = player.volume;
-		if (volume > 0.0) {
-			player.volume -= 0.2;
-			volumeProgress.value = player.volume * 10;
-		}
+		player.volume = (volume - 0.2 >= 0) ? volume - 0.2 : 0;
+		volumeProgress.value = player.volume * 10;
 
 	});
 
 	volumeUpElement.addEventListener("click", function() {
 		var volume = player.volume;
-		if (volume < 1.0) {
-			player.volume += 0.2;
-			volumeProgress.value = player.volume * 10;
-		}
+		player.volume = (volume + 0.2 <= 1) ? volume + 0.2 : 1;
+		volumeProgress.value = player.volume * 10;
 	});
 
 	fileElement.addEventListener("change", function(event) {
@@ -227,7 +223,8 @@
 		change();
 	},false);
 
-	musics.addEventListener("click", function(event) {
+
+	musics.addEventListener("dblclick", function(event) {
 		var name = event.target.innerHTML;
 		preparePlay(musicQueue.getMusicByName(name));
 	},false);
@@ -330,7 +327,7 @@
 
 	function setSelected(index) {
 		liElementsCache[index].classList.add("selected");
-		liElementsCache[index].scrollIntoView();
+		liElementsCache[index].scrollIntoView(false);
 	}
 
 	function removeSelected(index) {

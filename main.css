@@ -2,7 +2,7 @@
 * @Author: hwaphon
 * @Date:   2017-02-16 16:31:15
 * @Last Modified by:   hwaphon
-* @Last Modified time: 2017-03-26 15:59:16
+* @Last Modified time: 2017-03-26 18:59:28
 */
 
 *,*::after,*::before {
@@ -281,9 +281,11 @@ article#music-list {
     cursor: pointer;
     position: relative;
 }
+
 #music-list li.selected {
     background-color: #243949;
 }
+
 #music-list li:hover {
     background-color: #243949;
 }
@@ -304,6 +306,14 @@ li.play {
 ::-moz-scrollbar {
     background: linear-gradient(#333, #111);
     border-radius: 12px;
+}
+
+::selection {
+    background-color: transparent;
+}
+
+::-moz-selection {
+    background-color: transparent;
 }
 
 
