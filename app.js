@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-26 20:24:15
+ * @Last Modified time: 2017-03-26 20:36:10
  */
 
 (function() {
@@ -45,10 +45,6 @@
 			musics.push(music);
 		};
 
-		this.getIndex = function() {
-			return index;
-		};
-
 		this.addList = function(list) {
 			var length = list.length;
 
@@ -59,10 +55,9 @@
 
 		this.getMusic = function() {
 			if(loop === true) {
-				if(index === musics.length) {
+				if(index >= musics.length - 1) {
 					index = -1;
 				}
-
 				index += 1;
 				return musics[index];
 			} else {
