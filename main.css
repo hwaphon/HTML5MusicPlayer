@@ -2,7 +2,7 @@
 * @Author: hwaphon
 * @Date:   2017-02-16 16:31:15
 * @Last Modified by:   hwaphon
-* @Last Modified time: 2017-03-26 14:30:57
+* @Last Modified time: 2017-03-26 15:59:16
 */
 
 *,*::after,*::before {
@@ -46,7 +46,7 @@ aside {
 div#album-picture {
     float: left;
 
-    width: 128px;
+    width: 26%;
     height: 128px;
     margin-right: 36px;
 
@@ -279,14 +279,16 @@ article#music-list {
     border-bottom: 1px solid #fff;
     padding-left: 24px;
     cursor: pointer;
+    position: relative;
 }
-
+#music-list li.selected {
+    background-color: #243949;
+}
+#music-list li:hover {
+    background-color: #243949;
+}
 li.play {
     color: #06c;
-}
-
-li:hover {
-    background-color: 
 }
 
 ::-webkit-scrollbar {
@@ -303,3 +305,5 @@ li:hover {
     background: linear-gradient(#333, #111);
     border-radius: 12px;
 }
+
+

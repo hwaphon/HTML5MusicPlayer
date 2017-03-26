@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-26 14:06:44
+ * @Last Modified time: 2017-03-26 16:17:09
  */
 
 (function() {
@@ -24,7 +24,8 @@
 		musicPlayer = document.getElementById("music-player"),
 		musicUL = document.getElementById("musics"),
 		loopElement = document.getElementById("play-style-loop"),
-		randomElement = document.getElementById("play-style-random");
+		randomElement = document.getElementById("play-style-random"),
+		liElementsCache = [];
 
 	/* music queue to save and get music to play */
 	function MusicQueue() {
@@ -107,7 +108,9 @@
 	/* music queue end */
 
 	/* init view */
-	var musicQueue = new MusicQueue();
+	var musicQueue = new MusicQueue(),
+		index = 0;
+
 	(function init() {
 		var music = new Music("风筝误", "raw/fly.ogg");
 		musicQueue.addMusic(music);
@@ -115,8 +118,8 @@
 		player.src = music.src;
 		setTimeout(setDuration, 500);
 		appendMusicToDOM("风筝误");
+		setSelected(index);
 	})();
-	var index = 0;
 	/* end init view */
 
 	/* register event handler */
@@ -179,6 +182,7 @@
 
 	player.addEventListener("ended", function() {
 		var music = musicQueue.getMusic();
+		removeSelected(index);
 		preparePlay(music);
 	});
 
@@ -202,7 +206,6 @@
 	fileElement.addEventListener("change", function(event) {
 
 		var files = fileElement.files;
-		console.log(files);
 		for(var i = 0; i < files.length; i++) {
 			if((files[i].type).indexOf("audio") !== -1) {
 				var music = getMusic(files[i]);
@@ -256,7 +259,9 @@
 		clearTimeout(timeId);
 		timeId = setTimeout(change, 500);
 
-		var index = musicQueue.getIndexByName(music.name);
+		removeSelected(index);
+		index = musicQueue.getIndexByName(music.name);
+		setSelected(index);
 	}
 
 	// set music total time in dom
@@ -319,6 +324,16 @@
 		var li = document.createElement("li");
 		var text = document.createTextNode(name);
 		li.appendChild(text);
+		liElementsCache.push(li);
 		musicUL.appendChild(li);
+	}
+
+	function setSelected(index) {
+		liElementsCache[index].classList.add("selected");
+		liElementsCache[index].scrollIntoView();
+	}
+
+	function removeSelected(index) {
+		liElementsCache[index].classList.remove("selected");
 	}
 })();
