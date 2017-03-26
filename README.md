@@ -1,5 +1,17 @@
 
-### 2.0 版本 - 2017.03
+### 2.1 版本 - 2017 03.26
+
+这个版本较与上一版本是个小改动，即增添了随机播放和顺序播放的功能，其实现起来非常简单，就是利用一个 `div` 容器包含两个 `img` 标签，将 `div` 的 `position` 设置为 `relative`， 将 `img` 的 `position` 设置为 `absolute`，这样两张图片（一个是循环播放的图标，一个是随机播放的图标）就会重叠在一起，然后设置一个 `hidden` 类，用于将指定标签的 `visibility` 设置为 `hidden`，注意这里并没有设置 `display` 为 `none`。既然讲到了这里，就来提一下 `display:none` 和 `visibility: hidden` 的 区别：
+
+ 1. 如果设置了 `display: none`，那么元素就不再占用文档中的空间，看上去就好象这个元素并不存在（其实就是不存在了），这样的话，文档中的其它元素就会挤上来占用该元素本该占有的位置。
+
+ 2. 如果设置了 `visibility: hidden`，那么该元素只是看上去不存在，其实它还在文档中占有一席之地，意思就是它还处在它应该在的位置，只是看不到了而已。
+
+ 3. 看上去使用二者好像没多大区别，其实是有的，使用 `visibility: hidden - visibility: visible` 的时候元素是一个从不可见到可见的过程，这也就意味着我们可以在这个过程中添加一些动画效果，而对于 `display: none - display: *` 的过程是将一个元素添加到文档中，是个突变的过程，所以我们无法在这个过程中使用动画效果。
+
+网上一些文章说，当设置了 `visibility: hideen` 后，该元素是不可见的，但是可以触摸的到。说实话，我不是很明白这个触摸的到是什么意思！它能触发 `click` 事件？我在 `Firefox, Opera, Chrome` 中对此做了测试，事实是当设置了 `visibility: hidden` 后，它不能再触发 `click` 事件。
+
+### 2.0 版本 - 2017.03 
 
 ![image](https://github.com/hwaphon/HTML5MusicPlayer/blob/gh-pages/2.0.png)
 
