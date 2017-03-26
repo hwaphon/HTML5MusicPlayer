@@ -2,7 +2,7 @@
  * @Author: hwaphon
  * @Date:   2017-02-17 09:57:59
  * @Last Modified by:   hwaphon
- * @Last Modified time: 2017-03-26 21:22:53
+ * @Last Modified time: 2017-03-26 21:53:07
  */
 
 (function() {
@@ -148,16 +148,15 @@
 	musicPlayer.addEventListener("drop", readData, false);
 	function readData(e) {
 		e.preventDefault();
-		e.stopPropagation();
-
 		var filelist = e.dataTransfer.files;
 		if (!filelist) { return; }
 
 		if (filelist.length > 0) {
 			var file = filelist[0];
-
-			musicQueue.addMusic(getMusic(file));
-			appendMusicToDOM(file.name);
+			if((file.type).indexOf("audio") !== -1 && file.size > 8094) {
+				musicQueue.addMusic(getMusic(file));
+				appendMusicToDOM(file.name);
+			}
 		}
 	}
 
@@ -203,7 +202,7 @@
 
 		var files = fileElement.files;
 		for(var i = 0; i < files.length; i++) {
-			if((files[i].type).indexOf("audio") !== -1) {
+			if((files[i].type).indexOf("audio") !== -1 && files[i].size > 8094) {
 				var music = getMusic(files[i]);
 				musicQueue.addMusic(music);
 				appendMusicToDOM(music.name);
@@ -211,6 +210,7 @@
 
 		}
 	});
+
 	addMusicElement.addEventListener("click", function(event) {
 		fileElement.click();
 	});
@@ -264,7 +264,7 @@
 	function setDuration() {
 		var total = player.duration;
 		total = total ? total : 0;
-		durationElement.innerHTML = "/" + timeFormat(total);
+		durationElement.innerHTML = "/ " + timeFormat(total);
 	}
 
 	// set the current time of music in dom
